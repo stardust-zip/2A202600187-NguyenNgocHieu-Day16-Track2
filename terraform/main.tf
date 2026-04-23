@@ -102,7 +102,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port   = 0
@@ -205,15 +205,15 @@ resource "aws_iam_instance_profile" "ai_profile" {
 }
 
 resource "aws_instance" "gpu_node" {
-  ami                    = data.aws_ami.deep_learning.id
-  instance_type          = "g4dn.xlarge" 
+  ami                    = "ami-0102a36b3e9d5e4df"
+  instance_type          = "r5.xlarge"  # Since r52xlarge instaces need 8vCPIs, bastion host t3.micro need 2 vCPIs, the total required is 10 vCPUS -> Which exceed my current default limit of 8 vCPUs for standard instances -> so I use r5.xlarge instead.
   subnet_id              = aws_subnet.private[0].id
   vpc_security_group_ids = [aws_security_group.gpu_sg.id]
   key_name               = aws_key_pair.lab_key.key_name
   iam_instance_profile   = aws_iam_instance_profile.ai_profile.name
 
   root_block_device {
-    volume_size = 150 
+    volume_size = 150
     volume_type = "gp3"
   }
 
