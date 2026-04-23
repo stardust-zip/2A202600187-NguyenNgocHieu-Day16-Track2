@@ -93,7 +93,7 @@ resource "google_compute_instance" "gpu_node" {
   boot_disk {
     initialize_params {
       # Deep Learning VM image with CUDA pre-installed
-      image = "projects/deeplearning-platform-release/global/images/family/common-cu121-debian-11"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 100
       type  = "pd-ssd"
     }
@@ -111,7 +111,7 @@ resource "google_compute_instance" "gpu_node" {
   }
 
   scheduling {
-    on_host_maintenance = "TERMINATE"
+    on_host_maintenance = "MIGRATE"
     automatic_restart   = true
   }
 
